@@ -11,12 +11,16 @@ namespace praktika.Models
 
         [Required]
         [StringLength(100)]
-        public string? Name { get; set; }
+        public string? Login { get; set; }
 
-        [Range(0, 120)]
-        public int Age { get; set; }
-        
-        public int IdRole {  get; set; }
+        [Required]
+        [StringLength(100)]
+        public string? Password { get; set; }
+
+        [EmailAddress]
+        public string? Email { get; set; }
+
+        public int IdRole { get; set; }
 
         [ForeignKey("IdRole")]
         public Role? Role { get; set; }

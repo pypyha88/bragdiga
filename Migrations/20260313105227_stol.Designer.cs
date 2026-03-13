@@ -11,8 +11,8 @@ using praktika.Data;
 namespace praktika.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260313080255_202032032032_v2")]
-    partial class _202032032032_v2
+    [Migration("20260313105227_stol")]
+    partial class stol
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,13 +50,18 @@ namespace praktika.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUser"));
 
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IdRole")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");

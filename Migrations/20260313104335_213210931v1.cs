@@ -5,7 +5,7 @@
 namespace praktika.Migrations
 {
     /// <inheritdoc />
-    public partial class v1 : Migration
+    public partial class _213210931v1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

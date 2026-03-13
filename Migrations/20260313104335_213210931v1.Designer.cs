@@ -11,15 +11,15 @@ using praktika.Data;
 namespace praktika.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260310111156_v1")]
-    partial class v1
+    [Migration("20260313104335_213210931v1")]
+    partial class _213210931v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.24")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
