@@ -26,6 +26,7 @@ namespace praktika.Controllers
             if (!ModelState.IsValid) return View(model);
 
             var user = await _context.Users
+                .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Login == model.Login
                                        && u.Password == model.Password);
 
@@ -38,7 +39,8 @@ namespace praktika.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Login!),
-                new Claim(ClaimTypes.NameIdentifier, user.IdUser.ToString())
+                new Claim(ClaimTypes.NameIdentifier, user.IdUser.ToString()),
+                new Claim(ClaimTypes.Role, user.Role?.Name ?? "User")
             };
 
             var identity = new ClaimsIdentity(claims,

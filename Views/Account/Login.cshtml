@@ -1,34 +1,44 @@
 ﻿@using praktika.Models
 @model LoginViewModel
-
 @{
     ViewData["Title"] = "Вход";
 }
 
-<div class="row justify-content-center">
-    <div class="col-md-4">
-        <h2 class="mb-4">Вход</h2>
+<div class="row justify-content-center mt-4">
+    <div class="col-md-5">
+        <div style="background:white;border-radius:16px;padding:40px;border:1px solid #f0f0f0;">
 
-        <form asp-action="Login" method="post">
-            <div asp-validation-summary="All" class="text-danger mb-3"></div>
-
-            <div class="mb-3">
-                <label asp-for="Login" class="form-label">Логин</label>
-                <input asp-for="Login" class="form-control" />
-                <span asp-validation-for="Login" class="text-danger"></span>
+            <div style="text-align:center;margin-bottom:32px;">
+                <div style="font-size:2rem;margin-bottom:8px;">🔨</div>
+                <h2 style="font-size:1.4rem;font-weight:600;color:#111;margin-bottom:4px;">Добро пожаловать</h2>
+                <p style="color:#999;font-size:13px;">Войдите в свой аккаунт Trusty Tools</p>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="Password" class="form-label">Пароль</label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+            <form asp-action="Login" method="post">
+                <div asp-validation-summary="All" class="text-danger mb-3" style="font-size:13px;"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Login" style="font-size:13px;font-weight:500;color:#333;">Логин</label>
+                    <input asp-for="Login" class="form-control mt-1" placeholder="Введите логин" style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
+                    <span asp-validation-for="Login" class="text-danger" style="font-size:12px;"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Password" style="font-size:13px;font-weight:500;color:#333;">Пароль</label>
+                    <input asp-for="Password" type="password" class="form-control mt-1" placeholder="Введите пароль" style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
+                    <span asp-validation-for="Password" class="text-danger" style="font-size:12px;"></span>
+                </div>
+
+                <button type="submit" class="btn w-100" style="background:#18181b;color:white;border-radius:8px;padding:12px;font-size:14px;font-weight:500;">
+                    Войти
+                </button>
+            </form>
+
+            <div style="text-align:center;margin-top:20px;">
+                <span style="font-size:13px;color:#999;">Нет аккаунта?</span>
+                <a asp-controller="Users" asp-action="Create" style="font-size:13px;color:#4f8ef7;text-decoration:none;margin-left:4px;">Зарегистрироваться</a>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Войти</button>
-        </form>
-
-        <div class="mt-3 text-center">
-            <a asp-controller="Users" asp-action="Create">Нет аккаунта? Зарегистрироваться</a>
         </div>
     </div>
 </div>
