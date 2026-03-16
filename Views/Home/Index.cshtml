@@ -5,6 +5,13 @@
     var categories = ViewBag.Categories as List<Category> ?? new List<Category>();
 }
 
+@if (TempData["Success"] != null)
+{
+    <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:14px 20px;margin-bottom:16px;color:#16a34a;font-size:13px;">
+        ✅ @TempData["Success"]
+    </div>
+}
+
 <!-- HERO -->
 <div style="background:#18181b;border-radius:16px;padding:48px 48px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;">
     <div>
@@ -12,7 +19,7 @@
         <h1 style="font-size:2.2rem;font-weight:500;color:white;line-height:1.2;margin-bottom:12px;">Всё для строительства<br>и <span style="color:#4f8ef7;">ремонта</span></h1>
         <p style="color:rgba(255,255,255,0.5);margin-bottom:28px;font-size:0.95rem;">Качественные стройматериалы с доставкой.<br>Скидки до 30% на популярные позиции.</p>
         <div style="display:flex;gap:10px;">
-            <a href="#catalog" style="background:#4f8ef7;color:white;padding:12px 24px;border-radius:8px;font-weight:500;text-decoration:none;font-size:0.9rem;">Перейти в каталог</a>
+            <a asp-controller="Products" asp-action="Index" style="background:#4f8ef7;color:white;padding:12px 24px;border-radius:8px;font-weight:500;text-decoration:none;font-size:0.9rem;">Перейти в каталог</a>
             <a href="#" style="background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.12);padding:12px 24px;border-radius:8px;font-weight:500;text-decoration:none;font-size:0.9rem;">Акции →</a>
         </div>
     </div>
@@ -53,7 +60,7 @@
 <!-- КАТЕГОРИИ -->
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;" id="catalog">
     <h2 style="font-size:1.1rem;font-weight:500;color:#111;margin:0;">Категории</h2>
-    <a href="#" style="font-size:12px;color:#4f8ef7;text-decoration:none;">Все категории →</a>
+    <a asp-controller="Products" asp-action="Index" style="font-size:12px;color:#4f8ef7;text-decoration:none;">Все категории →</a>
 </div>
 
 @if (categories.Any())
@@ -61,7 +68,8 @@
     <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:28px;">
         @foreach (var cat in categories)
         {
-            <a href="#" style="background:white;border:1px solid #f0f0f0;border-radius:10px;padding:14px 8px;text-align:center;text-decoration:none;display:block;">
+            <a asp-controller="Products" asp-action="Index" asp-route-categoryId="@cat.IdCategory"
+               style="background:white;border:1px solid #f0f0f0;border-radius:10px;padding:14px 8px;text-align:center;text-decoration:none;display:block;">
                 <div style="width:100%;aspect-ratio:1;background:#f5f5f5;border-radius:8px;margin-bottom:8px;"></div>
                 <div style="font-size:10px;font-weight:500;color:#111;">@cat.Name</div>
             </a>
@@ -78,6 +86,7 @@ else
 <!-- ТОВАРЫ -->
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
     <h2 style="font-size:1.1rem;font-weight:500;color:#111;margin:0;">Популярные товары</h2>
+    <a asp-controller="Products" asp-action="Index" style="font-size:12px;color:#4f8ef7;text-decoration:none;">Весь каталог →</a>
 </div>
 
 @if (products.Any())
@@ -130,7 +139,11 @@ else
                                 <span style="font-size:10px;color:#ccc;text-decoration:line-through;margin-left:4px;">@p.OldPrice.Value.ToString("N2")</span>
                             }
                         </div>
-                        <button style="background:#18181b;color:white;border:none;padding:6px 12px;border-radius:6px;font-size:10px;cursor:pointer;">В корзину</button>
+                        <form asp-controller="Cart" asp-action="Add" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@p.IdProduct" />
+                            <input type="hidden" name="returnUrl" value="/Products" />
+                            <button type="submit" style="background:#4f8ef7;color:white;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;">В корзину</button>
+                        </form>
                     </div>
                 </div>
             </div>

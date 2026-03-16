@@ -1,0 +1,26 @@
+﻿@model praktika.Models.Product
+@{
+    ViewData["Title"] = "Удалить товар";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-5">
+        <div style="background:white;border-radius:16px;padding:40px;border:1px solid #f0f0f0;text-align:center;">
+            <div style="font-size:2.5rem;margin-bottom:16px;">⚠️</div>
+            <h2 style="font-size:1.2rem;font-weight:600;color:#111;margin-bottom:8px;">Удалить товар?</h2>
+            <p style="color:#999;font-size:13px;margin-bottom:24px;">Это действие нельзя отменить</p>
+
+            <div style="background:#f8f8f8;border-radius:10px;padding:16px;margin-bottom:24px;text-align:left;">
+                <div style="font-size:13px;font-weight:600;color:#111;margin-bottom:4px;">@Model.Name</div>
+                <div style="font-size:12px;color:#999;">Артикул: @Model.Article</div>
+                <div style="font-size:12px;color:#999;">Категория: @Model.Category?.Name</div>
+                <div style="font-size:13px;font-weight:600;color:#111;margin-top:8px;">@Model.Price.ToString("N2") руб</div>
+            </div>
+
+            <form asp-action="Delete" method="post" style="display:flex;gap:10px;">
+                <a asp-action="Index" class="btn w-50" style="background:#f5f5f5;color:#333;border-radius:8px;padding:11px;font-size:13px;text-decoration:none;">Отмена</a>
+                <button type="submit" class="btn w-50" style="background:#dc2626;color:white;border-radius:8px;padding:11px;font-size:13px;">Удалить</button>
+            </form>
+        </div>
+    </div>
+</div>
