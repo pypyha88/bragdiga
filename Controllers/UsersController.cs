@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using praktika.Data;
 using praktika.Models;
+using System.Security.Claims;
 
 namespace praktika.Controllers
 {
@@ -47,6 +50,21 @@ namespace praktika.Controllers
             {
                 _context.Add(user);
                 await _context.SaveChangesAsync();
+
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Login!),
+                    new Claim(ClaimTypes.NameIdentifier, user.IdUser.ToString()),
+                    new Claim(ClaimTypes.Role, "User")
+                };
+
+                var identity = new ClaimsIdentity(claims,
+                    CookieAuthenticationDefaults.AuthenticationScheme);
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(identity));
+
                 return RedirectToAction("Index", "Home");
             }
             ViewData["IdRole"] = new SelectList(_context.Roles, "IdRole", "Name", user.IdRole);

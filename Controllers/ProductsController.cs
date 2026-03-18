@@ -18,7 +18,6 @@ namespace praktika.Controllers
             _env = env;
         }
 
-        // Каталог — доступен всем
         public async Task<IActionResult> Index(string search, int? categoryId, string sortBy)
         {
             var query = _context.Products.Include(p => p.Category).AsQueryable();
@@ -45,7 +44,16 @@ namespace praktika.Controllers
             return View(await query.ToListAsync());
         }
 
-        // Добавить — только админ
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null) return NotFound();
+            var product = await _context.Products
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(p => p.IdProduct == id);
+            if (product == null) return NotFound();
+            return View(product);
+        }
+
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
@@ -77,7 +85,6 @@ namespace praktika.Controllers
             return View(product);
         }
 
-        // Редактировать — только админ
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -113,7 +120,6 @@ namespace praktika.Controllers
             return View(product);
         }
 
-        // Удалить — только админ
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {

@@ -1,0 +1,92 @@
+﻿@model praktika.Models.User
+@using praktika.Models
+@{
+    ViewData["Title"] = "Личный кабинет";
+    var orders = ViewBag.Orders as List<Order> ?? new List<Order>();
+}
+
+@if (TempData["Success"] != null)
+{
+    <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:14px 20px;margin-bottom:16px;color:#16a34a;font-size:13px;">
+        ✅ @TempData["Success"]
+    </div>
+}
+
+<div style="display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;">
+
+    <div>
+        <div style="background:white;border-radius:16px;padding:24px;border:1px solid #f0f0f0;margin-bottom:16px;">
+            <div style="text-align:center;margin-bottom:20px;">
+                <div style="width:72px;height:72px;background:#f0f4ff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 12px;">👤</div>
+                <div style="font-size:1rem;font-weight:600;color:#111;">@Model.Login</div>
+                <div style="font-size:12px;color:#999;margin-top:4px;">@Model.Role?.Name</div>
+            </div>
+
+            <form asp-action="UpdateProfile" method="post">
+                <div class="mb-3">
+                    <label style="font-size:12px;font-weight:500;color:#555;">Email</label>
+                    <input name="email" value="@Model.Email" class="form-control mt-1"
+                           style="border-radius:8px;border:1px solid #e0e0e0;padding:9px 14px;font-size:13px;" />
+                </div>
+                <button type="submit" class="btn w-100" style="background:#18181b;color:white;border-radius:8px;padding:10px;font-size:13px;">
+                    Сохранить
+                </button>
+            </form>
+        </div>
+
+        <div style="background:white;border-radius:16px;padding:20px;border:1px solid #f0f0f0;">
+            <div style="font-size:13px;font-weight:600;color:#111;margin-bottom:12px;">Статистика</div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                <span style="font-size:12px;color:#999;">Всего заказов</span>
+                <span style="font-size:12px;font-weight:600;color:#111;">@orders.Count</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+                <span style="font-size:12px;color:#999;">Сумма заказов</span>
+                <span style="font-size:12px;font-weight:600;color:#111;">@orders.Sum(o => o.TotalPrice).ToString("N2") руб</span>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div style="background:white;border-radius:16px;padding:24px;border:1px solid #f0f0f0;">
+            <h2 style="font-size:1.1rem;font-weight:600;color:#111;margin-bottom:20px;">История заказов</h2>
+
+            @if (!orders.Any())
+            {
+                <div style="text-align:center;padding:40px;color:#999;">
+                    <div style="font-size:2.5rem;margin-bottom:12px;">📦</div>
+                    <div style="font-size:13px;">Заказов пока нет</div>
+                </div>
+            }
+            else
+            {
+                @foreach (var order in orders)
+                {
+                    <div style="border:1px solid #f0f0f0;border-radius:12px;padding:16px;margin-bottom:12px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                            <div>
+                                <span style="font-size:13px;font-weight:600;color:#111;">Заказ №@order.IdOrder</span>
+                                <span style="font-size:11px;color:#999;margin-left:8px;">@order.CreatedAt.ToString("dd.MM.yyyy HH:mm")</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <span style="background:@(order.Status == "Выполнен" ? "#f0fdf4" : order.Status == "Отменён" ? "#fef2f2" : "#fff7ed");
+                                                     color:@(order.Status == "Выполнен" ? "#16a34a" : order.Status == "Отменён" ? "#dc2626" : "#c2410c");
+                                                     font-size:11px;padding:3px 10px;border-radius:4px;font-weight:500;">
+                                    @order.Status
+                                </span>
+                                <span style="font-size:14px;font-weight:700;color:#111;">@order.TotalPrice.ToString("N2") руб</span>
+                            </div>
+                        </div>
+                        @foreach (var item in order.Items)
+                        {
+                            <div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid #f5f5f5;">
+                                <span style="font-size:12px;color:#555;">@item.Product?.Name × @item.Quantity</span>
+                                <span style="font-size:12px;color:#111;">@((item.Price * item.Quantity).ToString("N2")) руб</span>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

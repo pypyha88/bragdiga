@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using praktika.Data;
+using praktika.Models;
+using System.Security.Claims;
 using System.Text.Json;
 
 namespace praktika.Controllers
@@ -35,19 +38,18 @@ namespace praktika.Controllers
                 .Include(p => p.Category)
                 .Where(p => cart.Keys.Contains(p.IdProduct))
                 .ToListAsync();
-
             ViewBag.Cart = cart;
             return View(products);
         }
 
         [HttpPost]
-        public IActionResult Add(int id)
+        public IActionResult Add(int id, string returnUrl = "/")
         {
             var cart = GetCart();
             if (cart.ContainsKey(id)) cart[id]++;
             else cart[id] = 1;
             SaveCart(cart);
-            return RedirectToAction("Index", "Products");
+            return Redirect(returnUrl);
         }
 
         [HttpPost]
@@ -76,12 +78,37 @@ namespace praktika.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Checkout()
+        [Authorize]
+        public async Task<IActionResult> Checkout()
         {
             var cart = GetCart();
             if (!cart.Any()) return RedirectToAction(nameof(Index));
+
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            var products = await _context.Products
+                .Where(p => cart.Keys.Contains(p.IdProduct))
+                .ToListAsync();
+
+            var order = new Order
+            {
+                IdUser = userId,
+                CreatedAt = DateTime.Now,
+                Status = "Новый",
+                TotalPrice = products.Sum(p => p.Price * cart[p.IdProduct]),
+                Items = products.Select(p => new OrderItem
+                {
+                    IdProduct = p.IdProduct,
+                    Quantity = cart[p.IdProduct],
+                    Price = p.Price
+                }).ToList()
+            };
+
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
+
             HttpContext.Session.Remove(CartKey);
-            TempData["Success"] = "Заказ успешно оформлен! Мы свяжемся с вами в ближайшее время.";
+            TempData["Success"] = "Заказ №" + order.IdOrder + " успешно оформлен! Мы свяжемся с вами в ближайшее время.";
             return RedirectToAction("Index", "Home");
         }
     }

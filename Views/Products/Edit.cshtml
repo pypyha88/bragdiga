@@ -52,6 +52,15 @@
                     </div>
                 </div>
 
+                <div class="mb-3">
+                    <label style="font-size:13px;font-weight:500;color:#333;">Характеристики</label>
+                    <div style="font-size:11px;color:#999;margin-bottom:6px;">Каждая строка: Название: Значение (например: Марка: М150)</div>
+                    <textarea id="specsInput" class="form-control mt-1" rows="5"
+                              placeholder="Марка: М150&#10;Размер: 250x120x65&#10;Вес: 3.5 кг&#10;Материал: Керамика"
+                              style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;font-size:13px;"></textarea>
+                    <input type="hidden" asp-for="Specifications" id="specsJson" />
+                </div>
+
                 @if (!string.IsNullOrEmpty(Model.ImagePath))
                 {
                     <div class="mb-3">
@@ -88,7 +97,28 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        // Загрузить существующие характеристики в текстовое поле
+        var existingSpecs = @Html.Raw(Model.Specifications ?? "{}");
+        if (existingSpecs && typeof existingSpecs === 'object') {
+            var lines = Object.entries(existingSpecs).map(([k, v]) => k + ': ' + v);
+            document.getElementById('specsInput').value = lines.join('\n');
+        }
+
+        // Конвертировать текст в JSON перед отправкой
+        document.querySelector('form').addEventListener('submit', function () {
+            var text = document.getElementById('specsInput').value;
+            var result = {};
+            text.split('\n').forEach(function (line) {
+                var idx = line.indexOf(':');
+                if (idx > 0) {
+                    var key = line.substring(0, idx).trim();
+                    var val = line.substring(idx + 1).trim();
+                    if (key && val) result[key] = val;
+                }
+            });
+            document.getElementById('specsJson').value = JSON.stringify(result);
+        });
+    </script>
 }

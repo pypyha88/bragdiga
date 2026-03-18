@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using praktika.Data;
 
@@ -11,9 +12,11 @@ using praktika.Data;
 namespace praktika.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260318080214_dksadasdada")]
+    partial class dksadasdada
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,63 +44,6 @@ namespace praktika.Migrations
                     b.HasKey("IdCategory");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("praktika.Models.Order", b =>
-                {
-                    b.Property<int>("IdOrder")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdOrder"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("IdUser")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("IdOrder");
-
-                    b.HasIndex("IdUser");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("praktika.Models.OrderItem", b =>
-                {
-                    b.Property<int>("IdOrderItem")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdOrderItem"));
-
-                    b.Property<int>("IdOrder")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdProduct")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdOrderItem");
-
-                    b.HasIndex("IdOrder");
-
-                    b.HasIndex("IdProduct");
-
-                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("praktika.Models.Product", b =>
@@ -139,9 +85,6 @@ namespace praktika.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Specifications")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdProduct");
 
@@ -199,36 +142,6 @@ namespace praktika.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("praktika.Models.Order", b =>
-                {
-                    b.HasOne("praktika.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("IdUser")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("praktika.Models.OrderItem", b =>
-                {
-                    b.HasOne("praktika.Models.Order", "Order")
-                        .WithMany("Items")
-                        .HasForeignKey("IdOrder")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("praktika.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("IdProduct")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("praktika.Models.Product", b =>
                 {
                     b.HasOne("praktika.Models.Category", "Category")
@@ -249,11 +162,6 @@ namespace praktika.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("praktika.Models.Order", b =>
-                {
-                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("praktika.Models.Role", b =>

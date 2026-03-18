@@ -33,5 +33,6 @@ namespace praktika.Models
         public int IdCategory { get; set; }
         [ForeignKey("IdCategory")]
         public Category? Category { get; set; }
+        public string? Specifications { get; set; } // JSON с характеристиками
     }
 }
