@@ -74,9 +74,47 @@
             &copy; 2026 — Trusty Tools. Все права защищены.
         </div>
     </footer>
+
+    <div id="cartToast" style="position:fixed;bottom:24px;right:24px;background:#18181b;color:white;padding:14px 20px;border-radius:10px;font-size:13px;font-weight:500;display:none;align-items:center;gap:10px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.2);">
+        🛒 Товар добавлен в корзину
+    </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('form[action*="/Cart/Add"]').forEach(function (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    var formData = new FormData(form);
+
+                    fetch('/Cart/Add', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    }).then(function () {
+                        var toast = document.getElementById('cartToast');
+                        toast.style.display = 'flex';
+                        toast.style.opacity = '1';
+                        setTimeout(function () {
+                            toast.style.transition = 'opacity 0.8s';
+                            toast.style.opacity = '0';
+                            setTimeout(function () {
+                                toast.style.display = 'none';
+                                toast.style.opacity = '1';
+                                toast.style.transition = '';
+                            }, 800);
+                        }, 3000);
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>

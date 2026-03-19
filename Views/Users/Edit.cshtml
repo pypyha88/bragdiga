@@ -1,49 +1,60 @@
 ﻿@model praktika.Models.User
-
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Редактировать пользователя";
 }
 
-<h1>Edit</h1>
+<div class="row justify-content-center mt-4">
+    <div class="col-md-5">
+        <div style="background:white;border-radius:16px;padding:40px;border:1px solid #f0f0f0;">
 
-<h4>User</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="IdUser" />
-            <div class="form-group">
-                <label asp-for="Login" class="control-label"></label>
-                <input asp-for="Login" class="form-control" />
-                <span asp-validation-for="Login" class="text-danger"></span>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
+                <h2 style="font-size:1.2rem;font-weight:600;color:#111;margin:0;">Редактировать пользователя</h2>
+                <a asp-action="Index" style="font-size:12px;color:#999;text-decoration:none;">← Назад</a>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdRole" class="control-label"></label>
-                <select asp-for="IdRole" class="form-control" asp-items="ViewBag.IdRole"></select>
-                <span asp-validation-for="IdRole" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+
+            <form asp-action="Edit">
+                <input type="hidden" asp-for="IdUser" />
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="font-size:13px;"></div>
+
+                <div class="mb-3">
+                    <label style="font-size:13px;font-weight:500;color:#333;">Логин</label>
+                    <input asp-for="Login" class="form-control mt-1"
+                           style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
+                    <span asp-validation-for="Login" class="text-danger" style="font-size:12px;"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label style="font-size:13px;font-weight:500;color:#333;">Пароль</label>
+                    <input asp-for="Password" class="form-control mt-1"
+                           style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
+                    <span asp-validation-for="Password" class="text-danger" style="font-size:12px;"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label style="font-size:13px;font-weight:500;color:#333;">Email</label>
+                    <input asp-for="Email" class="form-control mt-1"
+                           style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
+                    <span asp-validation-for="Email" class="text-danger" style="font-size:12px;"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label style="font-size:13px;font-weight:500;color:#333;">Роль</label>
+                    <select asp-for="IdRole" class="form-control mt-1" asp-items="ViewBag.IdRole"
+                            style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;"></select>
+                    <span asp-validation-for="IdRole" class="text-danger" style="font-size:12px;"></span>
+                </div>
+
+                <button type="submit" class="btn w-100"
+                        style="background:#18181b;color:white;border-radius:8px;padding:12px;font-size:14px;font-weight:500;">
+                    Сохранить
+                </button>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

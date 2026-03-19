@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using praktika.Data;
 using praktika.Models;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace praktika.Controllers
 {
@@ -27,7 +28,6 @@ namespace praktika.Controllers
                 .Where(o => o.IdUser == userId)
                 .OrderByDescending(o => o.CreatedAt)
                 .ToListAsync();
-
             ViewBag.Orders = orders;
             return View(user);
         }
@@ -38,12 +38,28 @@ namespace praktika.Controllers
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var user = await _context.Users.FindAsync(userId);
-            if (user != null)
+
+            if (user == null) return NotFound();
+
+            if (!string.IsNullOrEmpty(email))
             {
-                user.Email = email;
-                await _context.SaveChangesAsync();
-                TempData["Success"] = "Данные успешно обновлены!";
+                if (email.Length > 200)
+                {
+                    TempData["Error"] = "Email не может быть длиннее 200 символов";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+                if (!emailRegex.IsMatch(email))
+                {
+                    TempData["Error"] = "Введите корректный email";
+                    return RedirectToAction(nameof(Index));
+                }
             }
+
+            user.Email = email;
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "Данные успешно обновлены!";
             return RedirectToAction(nameof(Index));
         }
     }

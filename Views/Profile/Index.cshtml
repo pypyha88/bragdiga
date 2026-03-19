@@ -12,6 +12,13 @@
     </div>
 }
 
+@if (TempData["Error"] != null)
+{
+    <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px 20px;margin-bottom:16px;color:#dc2626;font-size:13px;">
+        ❌ @TempData["Error"]
+    </div>
+}
+
 <div style="display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;">
 
     <div>
@@ -25,7 +32,8 @@
             <form asp-action="UpdateProfile" method="post">
                 <div class="mb-3">
                     <label style="font-size:12px;font-weight:500;color:#555;">Email</label>
-                    <input name="email" value="@Model.Email" class="form-control mt-1"
+                    <input name="email" value="@Model.Email" class="form-control mt-1" maxlength="200"
+                           placeholder="example@mail.com"
                            style="border-radius:8px;border:1px solid #e0e0e0;padding:9px 14px;font-size:13px;" />
                 </div>
                 <button type="submit" class="btn w-100" style="background:#18181b;color:white;border-radius:8px;padding:10px;font-size:13px;">
@@ -62,6 +70,9 @@
             {
                 @foreach (var order in orders)
                 {
+                    var statusBg = order.Status == "Выполнен" ? "#f0fdf4" : order.Status == "Отменён" ? "#fef2f2" : "#fff7ed";
+                    var statusColor = order.Status == "Выполнен" ? "#16a34a" : order.Status == "Отменён" ? "#dc2626" : "#c2410c";
+
                     <div style="border:1px solid #f0f0f0;border-radius:12px;padding:16px;margin-bottom:12px;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
                             <div>
@@ -69,9 +80,7 @@
                                 <span style="font-size:11px;color:#999;margin-left:8px;">@order.CreatedAt.ToString("dd.MM.yyyy HH:mm")</span>
                             </div>
                             <div style="display:flex;align-items:center;gap:10px;">
-                                <span style="background:@(order.Status == "Выполнен" ? "#f0fdf4" : order.Status == "Отменён" ? "#fef2f2" : "#fff7ed");
-                                                     color:@(order.Status == "Выполнен" ? "#16a34a" : order.Status == "Отменён" ? "#dc2626" : "#c2410c");
-                                                     font-size:11px;padding:3px 10px;border-radius:4px;font-weight:500;">
+                                <span style="background:@statusBg;color:@statusColor;font-size:11px;padding:3px 10px;border-radius:4px;font-weight:500;">
                                     @order.Status
                                 </span>
                                 <span style="font-size:14px;font-weight:700;color:#111;">@order.TotalPrice.ToString("N2") руб</span>

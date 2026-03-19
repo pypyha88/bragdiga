@@ -17,48 +17,88 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="font-size:13px;"></div>
 
                 <div class="mb-3">
-                    <label style="font-size:13px;font-weight:500;color:#333;">Название</label>
-                    <input asp-for="Name" class="form-control mt-1" style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
+                    <div style="display:flex;justify-content:space-between;">
+                        <label style="font-size:13px;font-weight:500;color:#333;">Название</label>
+                        <span style="font-size:11px;color:#999;">макс. 200 символов</span>
+                    </div>
+                    <input asp-for="Name" class="form-control mt-1" maxlength="200"
+                           style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
                     <span asp-validation-for="Name" class="text-danger" style="font-size:12px;"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label style="font-size:13px;font-weight:500;color:#333;">Описание</label>
-                    <textarea asp-for="Description" class="form-control mt-1" rows="3" style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;"></textarea>
+                    <div style="display:flex;justify-content:space-between;">
+                        <label style="font-size:13px;font-weight:500;color:#333;">Описание</label>
+                        <span style="font-size:11px;color:#999;">макс. 2000 символов</span>
+                    </div>
+                    <textarea asp-for="Description" class="form-control mt-1" rows="3" maxlength="2000"
+                              style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;"></textarea>
                 </div>
 
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;" class="mb-3">
                     <div>
                         <label style="font-size:13px;font-weight:500;color:#333;">Цена (руб)</label>
-                        <input asp-for="Price" class="form-control mt-1" style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
+                        <input asp-for="Price" class="form-control mt-1" maxlength="10"
+                               style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
                         <span asp-validation-for="Price" class="text-danger" style="font-size:12px;"></span>
                     </div>
                     <div>
                         <label style="font-size:13px;font-weight:500;color:#333;">Старая цена (руб)</label>
-                        <input asp-for="OldPrice" class="form-control mt-1" style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
+                        <input asp-for="OldPrice" class="form-control mt-1" maxlength="10"
+                               style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
                     </div>
                 </div>
 
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;" class="mb-3">
                     <div>
                         <label style="font-size:13px;font-weight:500;color:#333;">Артикул</label>
-                        <input asp-for="Article" class="form-control mt-1" style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
+                        <input asp-for="Article" class="form-control mt-1" maxlength="50"
+                               style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
                     </div>
                     <div>
                         <label style="font-size:13px;font-weight:500;color:#333;">Категория</label>
-                        <select asp-for="IdCategory" class="form-control mt-1" asp-items="ViewBag.Categories" style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;">
+                        <select asp-for="IdCategory" class="form-control mt-1" asp-items="ViewBag.Categories"
+                                style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;">
                             <option value="">Выберите категорию</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label style="font-size:13px;font-weight:500;color:#333;">Характеристики</label>
-                    <div style="font-size:11px;color:#999;margin-bottom:6px;">Каждая строка: Название: Значение (например: Марка: М150)</div>
-                    <textarea id="specsInput" class="form-control mt-1" rows="5"
-                              placeholder="Марка: М150&#10;Размер: 250x120x65&#10;Вес: 3.5 кг&#10;Материал: Керамика"
-                              style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;font-size:13px;"></textarea>
-                    <input type="hidden" asp-for="Specifications" id="specsJson" />
+                <!-- ХАРАКТЕРИСТИКИ -->
+                <div style="background:#f8f8f8;border-radius:10px;padding:16px;margin-bottom:20px;">
+                    <div style="font-size:13px;font-weight:600;color:#111;margin-bottom:14px;">Характеристики</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div>
+                            <label style="font-size:12px;color:#555;">Марка / Производитель</label>
+                            <input asp-for="Brand" class="form-control mt-1" maxlength="100"
+                                   style="border-radius:6px;border:1px solid #e0e0e0;padding:8px 12px;font-size:13px;" />
+                        </div>
+                        <div>
+                            <label style="font-size:12px;color:#555;">Размер</label>
+                            <input asp-for="Size" class="form-control mt-1" maxlength="100"
+                                   style="border-radius:6px;border:1px solid #e0e0e0;padding:8px 12px;font-size:13px;" />
+                        </div>
+                        <div>
+                            <label style="font-size:12px;color:#555;">Вес</label>
+                            <input asp-for="Weight" class="form-control mt-1" maxlength="100"
+                                   style="border-radius:6px;border:1px solid #e0e0e0;padding:8px 12px;font-size:13px;" />
+                        </div>
+                        <div>
+                            <label style="font-size:12px;color:#555;">Материал</label>
+                            <input asp-for="Material" class="form-control mt-1" maxlength="100"
+                                   style="border-radius:6px;border:1px solid #e0e0e0;padding:8px 12px;font-size:13px;" />
+                        </div>
+                        <div>
+                            <label style="font-size:12px;color:#555;">Цвет</label>
+                            <input asp-for="Color" class="form-control mt-1" maxlength="100"
+                                   style="border-radius:6px;border:1px solid #e0e0e0;padding:8px 12px;font-size:13px;" />
+                        </div>
+                        <div>
+                            <label style="font-size:12px;color:#555;">Страна производства</label>
+                            <input asp-for="Country" class="form-control mt-1" maxlength="100"
+                                   style="border-radius:6px;border:1px solid #e0e0e0;padding:8px 12px;font-size:13px;" />
+                        </div>
+                    </div>
                 </div>
 
                 @if (!string.IsNullOrEmpty(Model.ImagePath))
@@ -73,7 +113,8 @@
 
                 <div class="mb-3">
                     <label style="font-size:13px;font-weight:500;color:#333;">Новое фото (оставьте пустым чтобы не менять)</label>
-                    <input type="file" name="imageFile" accept="image/*" class="form-control mt-1" style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
+                    <input type="file" name="imageFile" accept="image/*" class="form-control mt-1"
+                           style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
                 </div>
 
                 <div style="display:flex;gap:16px;margin-bottom:20px;">
@@ -88,7 +129,8 @@
                     </label>
                 </div>
 
-                <button type="submit" class="btn w-100" style="background:#18181b;color:white;border-radius:8px;padding:12px;font-size:14px;font-weight:500;">
+                <button type="submit" class="btn w-100"
+                        style="background:#18181b;color:white;border-radius:8px;padding:12px;font-size:14px;font-weight:500;">
                     Сохранить изменения
                 </button>
             </form>
@@ -97,28 +139,7 @@
 </div>
 
 @section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    <script>
-        // Загрузить существующие характеристики в текстовое поле
-        var existingSpecs = @Html.Raw(Model.Specifications ?? "{}");
-        if (existingSpecs && typeof existingSpecs === 'object') {
-            var lines = Object.entries(existingSpecs).map(([k, v]) => k + ': ' + v);
-            document.getElementById('specsInput').value = lines.join('\n');
-        }
-
-        // Конвертировать текст в JSON перед отправкой
-        document.querySelector('form').addEventListener('submit', function () {
-            var text = document.getElementById('specsInput').value;
-            var result = {};
-            text.split('\n').forEach(function (line) {
-                var idx = line.indexOf(':');
-                if (idx > 0) {
-                    var key = line.substring(0, idx).trim();
-                    var val = line.substring(idx + 1).trim();
-                    if (key && val) result[key] = val;
-                }
-            });
-            document.getElementById('specsJson').value = JSON.stringify(result);
-        });
-    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

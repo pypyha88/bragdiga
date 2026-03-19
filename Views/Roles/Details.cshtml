@@ -1,24 +1,35 @@
 ﻿@model praktika.Models.Role
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Детали роли";
 }
 
-<h1>Details</h1>
+<div class="row justify-content-center mt-4">
+    <div class="col-md-5">
+        <div style="background:white;border-radius:16px;padding:40px;border:1px solid #f0f0f0;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
+                <h2 style="font-size:1.2rem;font-weight:600;color:#111;margin:0;">Детали роли</h2>
+                <a asp-action="Index" style="font-size:12px;color:#999;text-decoration:none;">← Назад</a>
+            </div>
 
-<div>
-    <h4>Role</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.IdRole">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+            <div style="border-top:1px solid #f0f0f0;padding-top:20px;">
+                <div style="display:flex;justify-content:space-between;padding:12px 0;">
+                    <span style="font-size:13px;color:#999;">Название</span>
+                    <span style="background:@(Model.Name == "Admin" ? "#18181b" : "#f0f4ff");color:@(Model.Name == "Admin" ? "white" : "#4f8ef7");font-size:12px;padding:4px 12px;border-radius:4px;font-weight:500;">
+                        @Model.Name
+                    </span>
+                </div>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:24px;">
+                <a asp-action="Edit" asp-route-id="@Model?.IdRole"
+                   class="btn w-50" style="background:#f5f5f5;color:#333;border-radius:8px;padding:10px;font-size:13px;text-align:center;text-decoration:none;">
+                    Изменить
+                </a>
+                <a asp-action="Index"
+                   class="btn w-50" style="background:#18181b;color:white;border-radius:8px;padding:10px;font-size:13px;text-align:center;text-decoration:none;">
+                    К списку
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

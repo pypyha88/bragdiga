@@ -2,41 +2,34 @@
 @{
     ViewData["Title"] = "Регистрация";
 }
-
 <div class="row justify-content-center mt-4">
     <div class="col-md-5">
         <div style="background:white;border-radius:16px;padding:40px;border:1px solid #f0f0f0;">
-
             <div style="text-align:center;margin-bottom:32px;">
                 <div style="font-size:2rem;margin-bottom:8px;">🔨</div>
                 <h2 style="font-size:1.4rem;font-weight:600;color:#111;margin-bottom:4px;">Регистрация</h2>
                 <p style="color:#999;font-size:13px;">Создайте аккаунт в Trusty Tools</p>
             </div>
-
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
                 <div class="mb-3">
                     <label asp-for="Login" style="font-size:13px;font-weight:500;color:#333;">Логин</label>
-                    <input asp-for="Login" class="form-control mt-1" placeholder="Введите логин"
+                    <input asp-for="Login" class="form-control mt-1" placeholder="Введите логин" maxlength="30"
                            style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
                     <span asp-validation-for="Login" class="text-danger" style="font-size:12px;"></span>
                 </div>
-
                 <div class="mb-3">
                     <label asp-for="Password" style="font-size:13px;font-weight:500;color:#333;">Пароль</label>
-                    <input asp-for="Password" type="password" class="form-control mt-1" placeholder="Введите пароль"
+                    <input asp-for="Password" type="password" class="form-control mt-1" placeholder="Введите пароль" maxlength="30"
                            style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
                     <span asp-validation-for="Password" class="text-danger" style="font-size:12px;"></span>
                 </div>
-
                 <div class="mb-4">
                     <label asp-for="Email" style="font-size:13px;font-weight:500;color:#333;">Email</label>
-                    <input asp-for="Email" class="form-control mt-1" placeholder="example@mail.com"
+                    <input asp-for="Email" class="form-control mt-1" placeholder="example@mail.com" maxlength="200"
                            style="border-radius:8px;border:1px solid #e0e0e0;padding:10px 14px;" />
                     <span asp-validation-for="Email" class="text-danger" style="font-size:12px;"></span>
                 </div>
-
                 @if (User.IsInRole("Admin"))
                 {
                     <div class="mb-4">
@@ -49,23 +42,19 @@
                 {
                     <input type="hidden" asp-for="IdRole" value="2" />
                 }
-
                 <button type="submit" class="btn w-100"
                         style="background:#18181b;color:white;border-radius:8px;padding:12px;font-size:14px;font-weight:500;">
                     Зарегистрироваться
                 </button>
             </form>
-
             <div style="text-align:center;margin-top:20px;">
                 <span style="font-size:13px;color:#999;">Уже есть аккаунт?</span>
                 <a asp-controller="Account" asp-action="Login"
                    style="font-size:13px;color:#4f8ef7;text-decoration:none;margin-left:4px;">Войти</a>
             </div>
-
         </div>
     </div>
 </div>
-
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
